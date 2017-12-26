@@ -1,0 +1,20 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.5
+    ports:
+      - "27018:27018"
+    command: mongod --port 27018 --bind_ip_all
+  web:
+    build: .
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    working_dir: /usr/app
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    command: ["npm","start"]
